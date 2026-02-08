@@ -1,78 +1,120 @@
 --[[
-    HUB DE SCRIPTS - ORION LIBRARY MODIFICADA
-    Carregando a biblioteca (Versão corrigida sem ícone e bug de texto)
+    HUB DE SCRIPTS - PLACE ID DETECTION SYSTEM
 ]]
 
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/okhalexis/source/refs/heads/main/trse1')))()
 
--- Criando a Janela Principal
 local Window = OrionLib:MakeWindow({
-    Name = "Roblox Leaks/Scripts HUB",
+    Name = "KHALEXIS HUB V3.1",
     HidePremium = false,
     SaveConfig = true,
     ConfigFolder = "OrionHubConfig",
     IntroEnabled = true,
-    IntroText = "Carregando Hub..."
+    IntroText = "Khalexis Hub"
 })
 
--- =================================================================
--- CATEGORIA 1: Break a Lucky Block
--- =================================================================
+-- ÍCONE DA DIGITAL (FINGERPRINT)
+local IconeDigital = "rbxassetid://3944703587"
 
--- Variável com o nome do jogo (Para usar na Aba e na Seção)
-local Jogo1 = "Break a Lucky Block"
+-- TABELA DE CONFIGURAÇÃO DOS JOGOS
+local JogosDisponiveis = {
+    {
+        Name = "Break a Lucky Block",
+        PlaceId = 124311897657957,
+        Icon = "rbxassetid://4483345998",
+        ScriptFunc = function(Tab)
+            Tab:AddSection({ Name = "Break a Lucky Block Scripts" })
+            
+            Tab:AddButton({
+                Name = "TORA ISME",
+                Icon = IconeDigital,
+                Callback = function()
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/gumanba/Scripts/main/BreakaLuckyBlock"))()
+                end    
+            })
 
-local LuckyBlockTab = Window:MakeTab({
-	Name = Jogo1,
-	Icon = "rbxassetid://4483345998",
-	PremiumOnly = false
-})
+            Tab:AddButton({
+                Name = "SPEED HUB X",
+                Icon = IconeDigital,
+                Callback = function()
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua", true))()
+                end    
+            })
 
--- Aqui usamos a variável + a palavra "Scripts"
-LuckyBlockTab:AddSection({
-	Name = Jogo1 .. " Scripts" 
-})
+            Tab:AddButton({
+                Name = "LUMIN HUB",
+                Icon = IconeDigital,
+                Callback = function()
+                    loadstring(game:HttpGet("http://luminon.top/loader.lua"))()
+                end    
+            })
 
-LuckyBlockTab:AddButton({
-	Name = "TORA ISME",
-	Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/gumanba/Scripts/main/BreakaLuckyBlock"))()
-  	end    
-})
+            Tab:AddButton({
+                Name = "MAX37",
+                Icon = IconeDigital,
+                Callback = function()
+                    loadstring(game:HttpGet("https://gist.githubusercontent.com/ichtretekinder122/df01c6cbf8f79daf87a7416a91d1ea52/raw/lucky%20block" .. "?t=" .. tostring(math.random(1, 100000))))()
+                end    
+            })
+        end
+    },
+    {
+        Name = "Escape Tsunami for Brainrots",
+        PlaceId = 131623223084840,
+        Icon = "rbxassetid://4483345998",
+        ScriptFunc = function(Tab)
+            Tab:AddSection({ Name = "Escape Tsunami for Brainrots Scripts" })
+            Tab:AddButton({
+                Name = "KLS HUB",
+                Icon = IconeDigital,
+                Callback = function()
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/okhalexis/khalexishub/refs/heads/main/10k"))()
+                end    
+            })
+        end
+    }
+}
 
--- =================================================================
--- CATEGORIA 2: Escape Tsunami for Brainrots
--- =================================================================
+-- LÓGICA DE ORDENAÇÃO AUTOMÁTICA
+local CurrentPlaceId = game.PlaceId
+local CurrentGameData = nil
 
-local Jogo2 = "Escape Tsunami for Brainrots"
+-- 1. Verifica se estamos em um jogo suportado
+for i, jogo in pairs(JogosDisponiveis) do
+    if jogo.PlaceId == CurrentPlaceId then
+        CurrentGameData = jogo
+        table.remove(JogosDisponiveis, i) -- Remove da lista para não duplicar
+        break
+    end
+end
 
-local TsunamiTab = Window:MakeTab({
-	Name = Jogo2,
-	Icon = "rbxassetid://4483345998",
-	PremiumOnly = false
-})
+-- 2. Se achou o jogo atual, cria a aba dele PRIMEIRO (Ficará logo abaixo de Favoritos)
+if CurrentGameData then
+    local Tab = Window:MakeTab({
+        Name = "⭐ " .. CurrentGameData.Name, -- Adiciona a estrela no título da aba
+        Icon = CurrentGameData.Icon,
+        PremiumOnly = false
+    })
+    -- Executa a função que cria os botões dentro da aba
+    CurrentGameData.ScriptFunc(Tab)
+    
+    OrionLib:MakeNotification({
+        Name = "Jogo Detectado!",
+        Content = "Scripts para " .. CurrentGameData.Name .. " carregados no topo.",
+        Image = "rbxassetid://4483345998",
+        Time = 5
+    })
+end
 
--- Mesma lógica aqui: Nome do jogo + Scripts
-TsunamiTab:AddSection({
-	Name = Jogo2 .. " Scripts"
-})
+-- 3. Cria as abas dos outros jogos normalmente
+for _, jogo in pairs(JogosDisponiveis) do
+    local Tab = Window:MakeTab({
+        Name = jogo.Name,
+        Icon = jogo.Icon,
+        PremiumOnly = false
+    })
+    jogo.ScriptFunc(Tab)
+end
 
-TsunamiTab:AddButton({
-	Name = "KLS HUB",
-	Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/okhalexis/khalexishub/refs/heads/main/10k"))()
-  	end    
-})
-
--- =================================================================
--- FINALIZAÇÃO
--- =================================================================
-
+-- Inicializa
 OrionLib:Init()
-
-OrionLib:MakeNotification({
-	Name = "Bem-vindo!",
-	Content = "Hub carregado com sucesso.",
-	Image = "rbxassetid://4483345998",
-	Time = 5
-})
