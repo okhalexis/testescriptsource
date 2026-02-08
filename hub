@@ -1,6 +1,6 @@
 --[[
     HUB DE SCRIPTS - ORION LIBRARY MODIFICADA
-    Carregando a biblioteca com sistema de pesquisa na Sidebar
+    Carregando a biblioteca (Versão corrigida sem ícone e bug de texto)
 ]]
 
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/okhalexis/source/refs/heads/main/trse1')))()
@@ -19,21 +19,23 @@ local Window = OrionLib:MakeWindow({
 -- CATEGORIA 1: Break a Lucky Block
 -- =================================================================
 
+-- Variável com o nome do jogo (Para usar na Aba e na Seção)
+local Jogo1 = "Break a Lucky Block"
+
 local LuckyBlockTab = Window:MakeTab({
-	Name = "Break a Lucky Block",
-	Icon = "rbxassetid://4483345998", -- Ícone de Pasta (Genérico)
+	Name = Jogo1,
+	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
 
+-- Aqui usamos a variável + a palavra "Scripts"
 LuckyBlockTab:AddSection({
-	Name = "Scripts Disponíveis"
+	Name = Jogo1 .. " Scripts" 
 })
 
--- Script: TORA ISME
 LuckyBlockTab:AddButton({
 	Name = "TORA ISME",
 	Callback = function()
-        -- Executa o script do Tora Isme
         loadstring(game:HttpGet("https://raw.githubusercontent.com/gumanba/Scripts/main/BreakaLuckyBlock"))()
   	end    
 })
@@ -42,21 +44,22 @@ LuckyBlockTab:AddButton({
 -- CATEGORIA 2: Escape Tsunami for Brainrots
 -- =================================================================
 
+local Jogo2 = "Escape Tsunami for Brainrots"
+
 local TsunamiTab = Window:MakeTab({
-	Name = "Escape Tsunami for Brainrots",
-	Icon = "rbxassetid://4483345998", -- Ícone de Pasta (Genérico)
+	Name = Jogo2,
+	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
 
+-- Mesma lógica aqui: Nome do jogo + Scripts
 TsunamiTab:AddSection({
-	Name = "Scripts Disponíveis"
+	Name = Jogo2 .. " Scripts"
 })
 
--- Script: KLS HUB
 TsunamiTab:AddButton({
 	Name = "KLS HUB",
 	Callback = function()
-        -- Executa o script do KLS HUB
         loadstring(game:HttpGet("https://raw.githubusercontent.com/okhalexis/khalexishub/refs/heads/main/10k"))()
   	end    
 })
@@ -65,12 +68,11 @@ TsunamiTab:AddButton({
 -- FINALIZAÇÃO
 -- =================================================================
 
--- Inicializa a interface e notificações
 OrionLib:Init()
 
 OrionLib:MakeNotification({
-	Name = "Hub Carregado!",
-	Content = "Use a barra lateral para pesquisar os jogos.",
+	Name = "Bem-vindo!",
+	Content = "Hub carregado com sucesso.",
 	Image = "rbxassetid://4483345998",
 	Time = 5
 })
