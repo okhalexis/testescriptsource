@@ -3,9 +3,7 @@ KHALEXIS HUB V3.1
 HUB DE SCRIPTS - PLACE ID DETECTION SYSTEM + TAB DE ATUALIZAÇÕES
 ]]
 
-
 local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/okhalexis/source/refs/heads/main/trse1"))()
-
 
 local Window = OrionLib:MakeWindow({
     Name = "KHALEXIS HUB V3.1",
@@ -16,10 +14,8 @@ local Window = OrionLib:MakeWindow({
     IntroText = "Khalexis Hub"
 })
 
-
 local IconeDigital = "rbxassetid://3944703587"
 local IconePadrao  = "rbxassetid://4483345998"
-
 
 ----------------------------------------------------
 -- 1) ABA ATUALIZAÇÕES (SEMPRE SELECIONADA)
@@ -30,22 +26,17 @@ local AtualizacoesTab = Window:MakeTab({
     PremiumOnly = false
 })
 
-
 local ChangelogText = "Carregando atualizações..."
-
 
 pcall(function()
     ChangelogText = game:HttpGet("https://raw.githubusercontent.com/okhalexis/source/refs/heads/main/change%20log", true)
 end)
 
-
 AtualizacoesTab:AddSection({
     Name = "KHALEXIS HUB - ATUALIZAÇÕES"
 })
 
-
 AtualizacoesTab:AddParagraph("Versão 3.1", ChangelogText)
-
 
 ----------------------------------------------------
 -- 1.1) ABA FAVORITOS (ABAIXO DE ATUALIZAÇÕES)
@@ -70,33 +61,53 @@ local JogosDisponiveis = {
         PlaceId = 124311897657957,
         Icon = IconePadrao,
         ScriptFunc = function(Tab)
-
             Tab:AddButton({
                 Name = "TORA ISME",
                 Icon = IconeDigital,
                 Callback = function()
                     loadstring(game:HttpGet("https://raw.githubusercontent.com/gumanba/Scripts/main/BreakaLuckyBlock"))()
+                    
+                    -- Notificação adicionada
+                    OrionLib:MakeNotification({
+                        Name = "Notificação Khalexis Hub",
+                        Content = "O script TORA ISME foi executado.",
+                        Image = IconeDigital,
+                        Time = 5
+                    })
                 end
             })
-
 
             Tab:AddButton({
                 Name = "SPEED HUB X",
                 Icon = IconeDigital,
                 Callback = function()
                     loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Speed-Hub-X/main/Speed%20Hub%20X.lua", true))()
+                    
+                    -- Notificação adicionada
+                    OrionLib:MakeNotification({
+                        Name = "Notificação Khalexis Hub",
+                        Content = "O script SPEED HUB X foi executado.",
+                        Image = IconeDigital,
+                        Time = 5
+                    })
                 end
             })
-
 
             Tab:AddButton({
                 Name = "LUMIN HUB",
                 Icon = IconeDigital,
                 Callback = function()
                     loadstring(game:HttpGet("http://luminon.top/loader.lua"))()
+                    
+                    -- Notificação adicionada
+                    OrionLib:MakeNotification({
+                        Name = "Notificação Khalexis Hub",
+                        Content = "O script LUMIN HUB foi executado.",
+                        Image = IconeDigital,
+                        Time = 5
+                    })
                 end
             })
-
 
             Tab:AddButton({
                 Name = "MAX37",
@@ -106,6 +117,14 @@ local JogosDisponiveis = {
                         "https://gist.githubusercontent.com/ichtretekinder122/df01c6cbf8f79daf87a7416a91d1ea52/raw/lucky%20block"
                         .. "?t=" .. tostring(math.random(1, 100000))
                     ))()
+                    
+                    -- Notificação adicionada
+                    OrionLib:MakeNotification({
+                        Name = "Notificação Khalexis Hub",
+                        Content = "O script MAX37 foi executado.",
+                        Image = IconeDigital,
+                        Time = 5
+                    })
                 end
             })
         end
@@ -115,25 +134,55 @@ local JogosDisponiveis = {
         PlaceId = 131623223084840,
         Icon = IconePadrao,
         ScriptFunc = function(Tab)
-
             Tab:AddButton({
                 Name = "KLS HUB",
                 Icon = IconeDigital,
                 Callback = function()
                     loadstring(game:HttpGet("https://raw.githubusercontent.com/okhalexis/khalexishub/refs/heads/main/10k"))()
+                    
+                    -- Notificação adicionada
+                    OrionLib:MakeNotification({
+                        Name = "Notificação Khalexis Hub",
+                        Content = "O script KLS HUB foi executado.",
+                        Image = IconeDigital,
+                        Time = 5
+                    })
                 end
             })
         end
+    },
+    -- ADICIONADO: MURDER MYSTERY 2 EM ÚLTIMO
+    {
+        Name = "Murder Mystery 2",
+        PlaceId = 142823291, -- ID Oficial do MM2 para detecção automática
+        Icon = IconePadrao,
+        ScriptFunc = function(Tab)
+            
+            Tab:AddButton({
+                Name = "ANBU",
+                Icon = IconeDigital,
+                Callback = function()
+                    loadstring(game:HttpGet("https://e-vil.com/anbu/mm2main.lua"))()
+                    
+                    -- Notificação modelo
+                    OrionLib:MakeNotification({
+                        Name = "Notificação Khalexis Hub",
+                        Content = "O script ANBU foi executado.",
+                        Image = IconeDigital,
+                        Time = 5
+                    })
+                end
+            })
+
+        end
     }
 }
-
 
 ----------------------------------------------------
 -- 3) DETECÇÃO DO JOGO ATUAL
 ----------------------------------------------------
 local CurrentPlaceId = game.PlaceId
 local CurrentGameData = nil
-
 
 for i, jogo in pairs(JogosDisponiveis) do
     if jogo.PlaceId == CurrentPlaceId then
@@ -142,7 +191,6 @@ for i, jogo in pairs(JogosDisponiveis) do
         break
     end
 end
-
 
 ----------------------------------------------------
 -- 4) FUNÇÃO PRA CRIAR TABS DE JOGOS
@@ -154,15 +202,12 @@ local function CriarTabJogo(jogo, estrela)
         PremiumOnly = false
     })
 
-
     jogo.ScriptFunc(Tab)
 end
-
 
 -- Jogo atual (se existir)
 if CurrentGameData then
     CriarTabJogo(CurrentGameData, true)
-
 
     OrionLib:MakeNotification({
         Name = "Jogo Detectado!",
@@ -172,12 +217,10 @@ if CurrentGameData then
     })
 end
 
-
 -- Depois os outros jogos
 for _, jogo in pairs(JogosDisponiveis) do
     CriarTabJogo(jogo, false)
 end
-
 
 ----------------------------------------------------
 -- 5) INICIALIZA A UI
