@@ -36,7 +36,7 @@ local Icons = {
     JunkieNewIcon = "rbxassetid://131774582967880"
 }
 
--- DEBUG: PRINT TABELA
+-- DEBUG
 local function printTable(t, indent)
     indent = indent or ""
     for k, v in pairs(t) do
@@ -88,10 +88,10 @@ local function clearSavedKey()
     return ok
 end
 
--- CONFIG VISUAL (TUDO MENOR)
+-- CONFIG VISUAL
 local Configuration = {
     ScreenGuiName = "JunkieKeySystem",
-    Window = {Size = UDim2.new(0, 300, 0, 260)}, -- bem mais compacto
+    Window = {Size = UDim2.new(0, 300, 0, 260)},
     Colors = {
         Bg = Color3.fromRGB(12, 12, 12),
         Primary = Color3.fromRGB(59, 130, 246),
@@ -220,7 +220,7 @@ local function SetBlur(enabled)
     end
 end
 
--- TOAST SYSTEM (levemente menor)
+-- TOAST SYSTEM
 local ToastSystem = {ActiveToasts = {}, MaxToasts = 3, ToastSpacing = 6}
 
 ToastSystem.Create = function(parent, message, toastType, duration, statusCode)
@@ -250,7 +250,8 @@ ToastSystem.Create = function(parent, message, toastType, duration, statusCode)
     local toast = Instance.new("Frame")
     toast.Name = tostring(tick())
     toast.Size = UDim2.new(0, 0, 0, toastHeight)
-    toast.Position = UDim2.new(0.5, 0, 0, 12)
+    -- bem perto do topo da janela (um pouco abaixo do título)
+    toast.Position = UDim2.new(0.5, 0, 0, 36)
     toast.AnchorPoint = Vector2.new(0.5, 0)
     toast.BackgroundColor3 = Configuration.Colors.Bg
     toast.BackgroundTransparency = 0.5
@@ -372,12 +373,13 @@ end
 
 ToastSystem.RepositionToasts = function()
     for i, toast in ipairs(ToastSystem.ActiveToasts) do
-        local targetY = 12 + ((i - 1) * (toast.Size.Y.Offset + ToastSystem.ToastSpacing))
+        -- linha base logo abaixo do texto "Khalexis Team"
+        local targetY = 36 + ((i - 1) * (toast.Size.Y.Offset + ToastSystem.ToastSpacing))
         Utils.Tween(toast, {Position = UDim2.new(0.5, 0, 0, targetY)}, Configuration.Animations.Medium)
     end
 end
 
--- CONSTRUÇÃO DA TELA DE KEY (TODOS ELEMENTOS REDUZIDOS)
+-- BUILD UI
 local function Build()
     local parent = game:GetService("CoreGui")
     local old = parent:FindFirstChild(Configuration.ScreenGuiName)
@@ -400,7 +402,8 @@ local function Build()
 
     local main = Instance.new("Frame")
     main.Size = Configuration.Window.Size
-    main.Position = UDim2.new(0.5, 0, 0.5, 20)
+    -- CENTRALIZADO NA TELA (X e Y)
+    main.Position = UDim2.new(0.5, 0, 0.5, 0)
     main.AnchorPoint = Vector2.new(0.5, 0.5)
     main.BackgroundColor3 = Configuration.Colors.Bg
     main.BackgroundTransparency = 0.2
@@ -458,8 +461,10 @@ local function Build()
     content.Size = UDim2.new(1, 0, 1, -32)
     content.Position = UDim2.new(0, 0, 0, 32)
     content.BackgroundTransparency = 1
-    content.ScrollBarThickness = 0
-    content.CanvasSize = UDim2.new(0, 0, 0, 220)
+    content.ScrollBarThickness = 6
+    content.VerticalScrollBarInset = Enum.ScrollBarInset.ScrollBar
+    content.VerticalScrollBarPosition = Enum.VerticalScrollBarPosition.Right
+    content.CanvasSize = UDim2.new(0, 0, 0, 360)
     content.Parent = main
 
     local list = Instance.new("UIListLayout")
@@ -603,7 +608,6 @@ local function Build()
     paste.BackgroundTransparency = 1
     paste.Parent = inputFrame
 
-    -- Container de botões
     local btnRow = Instance.new("Frame")
     btnRow.Size = UDim2.new(0, 260, 0, 100)
     btnRow.BackgroundTransparency = 1
@@ -681,7 +685,6 @@ local function Build()
         Utils.Tween(iStroke, {Transparency = 0.95, Thickness = 1}, 0.25)
     end)
 
-    -- STATUS / SPINNER
     local spinConnection
     local dotsThread
 
@@ -716,15 +719,15 @@ local function Build()
                 sImg.Rotation = (sImg.Rotation + dt * 360) % 360
             end)
 
-            local dots = {".", "..", "...", ""}
+            local dotsArr = {".", "..", "...", ""}
             local i = 1
             dotsThread = task.spawn(function()
                 while sValue and sValue.Parent do
                     if not sValue.Text:find("Verificando Acesso", 1, true) then
                         break
                     end
-                    sValue.Text = text .. dots[i]
-                    i = (i % #dots) + 1
+                    sValue.Text = text .. dotsArr[i]
+                    i = (i % #dotsArr) + 1
                     task.wait(0.4)
                 end
             end)
@@ -747,7 +750,6 @@ local function Build()
         sImg.Image = icon
     end
 
-    -- BOTÃO VERIFICAR KEY + DEBUG
     redeem.MouseButton1Click:Connect(function()
         local key = box.Text:gsub("%s+", "")
         if key == "" then return end
@@ -846,14 +848,13 @@ local function Build()
     Utils.Tween(
         main,
         {
-            Position = UDim2.new(0.5, 0, 0.5, 20),
+            Position = UDim2.new(0.5, 0, 0.5, 0),
             BackgroundTransparency = 0.2
         },
         0.7,
         Enum.EasingStyle.Exponential
     )
 
-    -- Drag
     local dragging, dragStart, startPos
     bar.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
@@ -878,7 +879,7 @@ local function Build()
     return screen
 end
 
--- CHECAGEM INICIAL DA KEY
+-- CHECAGEM INICIAL
 local savedKey = loadVerifiedKey()
 local keyToCheck = savedKey
 if not keyToCheck then
@@ -920,14 +921,6 @@ else
     Build()
 end
 
--- BLOQUEIO DE EXECUÇÃO ATÉ A KEY SER VALIDADA
-while not getgenv().SCRIPT_KEY do
-    task.wait(0.2)
-end
-
--- ====================================================
--- BLOQUEIO DE EXECUÇÃO ATÉ A KEY SER VALIDADA
--- ====================================================
 while not getgenv().SCRIPT_KEY do
     task.wait(0.2)
 end
