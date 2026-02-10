@@ -515,7 +515,7 @@ local function Build()
     local subTitle = Instance.new("TextLabel")
     subTitle.Size = UDim2.new(1, 0, 0, 12)
     subTitle.Position = UDim2.fromOffset(0, 18)
-    subTitle.Text = "Sistema de Key"
+    subTitle.Text = "Sistema de Key ( role para baixo )"
     subTitle.TextColor3 = Configuration.Colors.TextSec
     subTitle.TextSize = Configuration.Fonts.Subtitle
     subTitle.Font = Enum.Font.Gotham
