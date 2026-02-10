@@ -36,9 +36,7 @@ local Icons = {
     JunkieNewIcon = "rbxassetid://131774582967880"
 }
 
--- ====================================================
--- FUNÇÃO DE DEBUG PARA VER TODA A RESPOSTA DO JUNKIE
--- ====================================================
+-- DEBUG: PRINT TABELA
 local function printTable(t, indent)
     indent = indent or ""
     for k, v in pairs(t) do
@@ -51,9 +49,7 @@ local function printTable(t, indent)
     end
 end
 
--- ====================================================
--- SUPORTE A FILESYSTEM PARA SALVAR KEY
--- ====================================================
+-- FILESYSTEM
 local function hasFileSystemSupport()
     local hasWritefile = pcall(function() return type(writefile) == "function" end)
     local hasReadfile = pcall(function() return type(readfile) == "function" end)
@@ -92,12 +88,10 @@ local function clearSavedKey()
     return ok
 end
 
--- ====================================================
--- CONFIGURAÇÃO VISUAL
--- ====================================================
+-- CONFIG VISUAL (TUDO MENOR)
 local Configuration = {
     ScreenGuiName = "JunkieKeySystem",
-    Window = {Size = UDim2.new(0, 333, 0, 600)},
+    Window = {Size = UDim2.new(0, 300, 0, 260)}, -- bem mais compacto
     Colors = {
         Bg = Color3.fromRGB(12, 12, 12),
         Primary = Color3.fromRGB(59, 130, 246),
@@ -123,32 +117,30 @@ local Configuration = {
     Animations = {
         VeryFast = 0.1,
         Fast = 0.2,
-        Medium = 0.4,
-        Slow = 0.5,
-        VerySlow = 0.6,
-        Bounce = 0.6
+        Medium = 0.3,
+        Slow = 0.4,
+        VerySlow = 0.5,
+        Bounce = 0.5
     },
     Fonts = {
-        Title = 24,
-        Subtitle = 12,
-        Button = 14,
-        Input = 16,
-        Body = 13,
-        Small = 11,
-        Tiny = 12
+        Title = 18,
+        Subtitle = 11,
+        Button = 12,
+        Input = 13,
+        Body = 12,
+        Small = 10,
+        Tiny = 10
     }
 }
 
--- ====================================================
 -- UTILS
--- ====================================================
 local Utils = {}
 
 Utils.Tween = function(obj, props, time, style, dir)
     local t =
         TweenService:Create(
         obj,
-        TweenInfo.new(time or 0.3, style or Enum.EasingStyle.Quint, dir or Enum.EasingDirection.Out),
+        TweenInfo.new(time or 0.25, style or Enum.EasingStyle.Quint, dir or Enum.EasingDirection.Out),
         props
     )
     t:Play()
@@ -157,14 +149,14 @@ end
 
 Utils.CreateCorner = function(parent, radius)
     local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(0, radius or Configuration.CornerRadius)
+    corner.CornerRadius = UDim.new(0, radius or 10)
     corner.Parent = parent
     return corner
 end
 
 Utils.Round = function(obj, radius)
     local c = Instance.new("UICorner")
-    c.CornerRadius = UDim.new(0, radius or 12)
+    c.CornerRadius = UDim.new(0, radius or 10)
     c.Parent = obj
     return c
 end
@@ -216,11 +208,11 @@ local function SetBlur(enabled)
             blur.Size = 0
             blur.Parent = Lighting
         end
-        Utils.Tween(blur, {Size = 24}, Configuration.Animations.Bounce)
+        Utils.Tween(blur, {Size = 18}, Configuration.Animations.Bounce)
     elseif blur then
         Utils.Tween(blur, {Size = 0}, Configuration.Animations.Medium)
         task.delay(
-            0.4,
+            0.3,
             function()
                 blur:Destroy()
             end
@@ -228,10 +220,8 @@ local function SetBlur(enabled)
     end
 end
 
--- ====================================================
--- TOAST SYSTEM
--- ====================================================
-local ToastSystem = {ActiveToasts = {}, MaxToasts = 3, ToastSpacing = 10}
+-- TOAST SYSTEM (levemente menor)
+local ToastSystem = {ActiveToasts = {}, MaxToasts = 3, ToastSpacing = 6}
 
 ToastSystem.Create = function(parent, message, toastType, duration, statusCode)
     local colors = {
@@ -256,11 +246,11 @@ ToastSystem.Create = function(parent, message, toastType, duration, statusCode)
         end
     end
 
-    local toastHeight = 56
+    local toastHeight = 46
     local toast = Instance.new("Frame")
-    toast.Name = tick()
+    toast.Name = tostring(tick())
     toast.Size = UDim2.new(0, 0, 0, toastHeight)
-    toast.Position = UDim2.new(0.5, 0, 0, 20)
+    toast.Position = UDim2.new(0.5, 0, 0, 12)
     toast.AnchorPoint = Vector2.new(0.5, 0)
     toast.BackgroundColor3 = Configuration.Colors.Bg
     toast.BackgroundTransparency = 0.5
@@ -269,25 +259,25 @@ ToastSystem.Create = function(parent, message, toastType, duration, statusCode)
     toast.ClipsDescendants = true
     toast.Parent = parent
 
-    Utils.Round(toast, 14)
+    Utils.Round(toast, 10)
     Utils.CreateStroke(toast, toastColor, 1, 0.1)
     Utils.CreateGradient(toast, Configuration.Colors.Bg, Configuration.Colors.Bg, 1)
 
     local iconBg = Instance.new("Frame")
     iconBg.Name = "IconBg"
-    iconBg.Size = UDim2.new(0, 36, 0, 36)
-    iconBg.Position = UDim2.new(0, 12, 0.5, 0)
+    iconBg.Size = UDim2.new(0, 30, 0, 30)
+    iconBg.Position = UDim2.new(0, 10, 0.5, 0)
     iconBg.AnchorPoint = Vector2.new(0, 0.5)
     iconBg.BackgroundColor3 = toastColor
     iconBg.BackgroundTransparency = 0.85
     iconBg.BorderSizePixel = 0
     iconBg.ZIndex = 301
     iconBg.Parent = toast
-    Utils.Round(iconBg, 18)
+    Utils.Round(iconBg, 15)
 
     local icon = Instance.new("ImageLabel")
     icon.Name = "Icon"
-    icon.Size = UDim2.new(0, 20, 0, 20)
+    icon.Size = UDim2.new(0, 18, 0, 18)
     icon.Position = UDim2.new(0.5, 0, 0.5, 0)
     icon.AnchorPoint = Vector2.new(0.5, 0.5)
     icon.BackgroundTransparency = 1
@@ -298,8 +288,8 @@ ToastSystem.Create = function(parent, message, toastType, duration, statusCode)
 
     local textContainer = Instance.new("Frame")
     textContainer.Name = "TextContainer"
-    textContainer.Size = UDim2.new(1, statusCode and -110 or -60, 1, 0)
-    textContainer.Position = UDim2.new(0, 56, 0, 0)
+    textContainer.Size = UDim2.new(1, statusCode and -96 or -56, 1, 0)
+    textContainer.Position = UDim2.new(0, 48, 0, 0)
     textContainer.BackgroundTransparency = 1
     textContainer.ZIndex = 301
     textContainer.Parent = toast
@@ -321,8 +311,8 @@ ToastSystem.Create = function(parent, message, toastType, duration, statusCode)
     if statusCode then
         local statusBadge = Instance.new("Frame")
         statusBadge.Name = "StatusBadge"
-        statusBadge.Size = UDim2.new(0, 44, 0, 28)
-        statusBadge.Position = UDim2.new(1, -12, 0.5, 0)
+        statusBadge.Size = UDim2.new(0, 40, 0, 24)
+        statusBadge.Position = UDim2.new(1, -8, 0.5, 0)
         statusBadge.AnchorPoint = Vector2.new(1, 0.5)
         statusBadge.BackgroundColor3 = toastColor
         statusBadge.BackgroundTransparency = 0.8
@@ -347,17 +337,17 @@ ToastSystem.Create = function(parent, message, toastType, duration, statusCode)
     table.insert(ToastSystem.ActiveToasts, toast)
     ToastSystem.RepositionToasts()
 
-    local targetWidth = 320
+    local targetWidth = 260
     Utils.TweenBack(toast, {Size = UDim2.new(0, targetWidth, 0, toastHeight)}, Configuration.Animations.Medium)
 
     task.delay(
-        duration or 3.5,
+        duration or 3,
         function()
             if toast.Parent then
                 Utils.Tween(
                     toast,
                     {
-                        Position = UDim2.new(0.5, 0, 0, -80),
+                        Position = UDim2.new(0.5, 0, 0, -70),
                         BackgroundTransparency = 1
                     },
                     Configuration.Animations.Medium
@@ -382,14 +372,12 @@ end
 
 ToastSystem.RepositionToasts = function()
     for i, toast in ipairs(ToastSystem.ActiveToasts) do
-        local targetY = 20 + ((i - 1) * (60 + ToastSystem.ToastSpacing))
+        local targetY = 12 + ((i - 1) * (toast.Size.Y.Offset + ToastSystem.ToastSpacing))
         Utils.Tween(toast, {Position = UDim2.new(0.5, 0, 0, targetY)}, Configuration.Animations.Medium)
     end
 end
 
--- ====================================================
--- CONSTRUÇÃO DA TELA DE KEY
--- ====================================================
+-- CONSTRUÇÃO DA TELA DE KEY (TODOS ELEMENTOS REDUZIDOS)
 local function Build()
     local parent = game:GetService("CoreGui")
     local old = parent:FindFirstChild(Configuration.ScreenGuiName)
@@ -407,19 +395,18 @@ local function Build()
     overlay.BackgroundColor3 = Color3.new(0, 0, 0)
     overlay.BackgroundTransparency = 1
     overlay.Parent = screen
-    Utils.Tween(overlay, {BackgroundTransparency = 1}, 1)
 
     SetBlur(true)
 
     local main = Instance.new("Frame")
     main.Size = Configuration.Window.Size
-    main.Position = UDim2.new(0.5, 0, 0.5, 60)
+    main.Position = UDim2.new(0.5, 0, 0.5, 20)
     main.AnchorPoint = Vector2.new(0.5, 0.5)
     main.BackgroundColor3 = Configuration.Colors.Bg
     main.BackgroundTransparency = 0.2
     main.ClipsDescendants = true
     main.Parent = screen
-    Utils.Round(main, 24)
+    Utils.Round(main, 14)
     Utils.Stroke(main, Color3.new(1, 1, 1), 1, 0.92)
 
     local glass = Instance.new("Frame")
@@ -428,16 +415,16 @@ local function Build()
     glass.BackgroundTransparency = 0.985
     glass.ZIndex = 0
     glass.Parent = main
-    Utils.Round(glass, 24)
+    Utils.Round(glass, 14)
 
     local bar = Instance.new("Frame")
-    bar.Size = UDim2.new(1, 0, 0, 54)
+    bar.Size = UDim2.new(1, 0, 0, 32)
     bar.BackgroundTransparency = 1
     bar.Parent = main
 
     local dots = Instance.new("Frame")
-    dots.Size = UDim2.new(0, 54, 0, 12)
-    dots.Position = UDim2.new(0, 20, 0.5, 0)
+    dots.Size = UDim2.new(0, 40, 0, 10)
+    dots.Position = UDim2.new(0, 12, 0.5, 0)
     dots.AnchorPoint = Vector2.new(0, 0.5)
     dots.BackgroundTransparency = 1
     dots.Parent = bar
@@ -449,12 +436,12 @@ local function Build()
     }
     for i, c in ipairs(dColors) do
         local d = Instance.new("Frame")
-        d.Size = UDim2.fromOffset(12, 12)
-        d.Position = UDim2.fromOffset((i - 1) * 18, 0)
+        d.Size = UDim2.fromOffset(8, 8)
+        d.Position = UDim2.fromOffset((i - 1) * 14, 1)
         d.BackgroundColor3 = c
         d.BorderSizePixel = 0
         d.Parent = dots
-        Utils.Round(d, 6)
+        Utils.Round(d, 4)
     end
 
     local titleText = Instance.new("TextLabel")
@@ -468,27 +455,27 @@ local function Build()
     titleText.Parent = bar
 
     local content = Instance.new("ScrollingFrame")
-    content.Size = UDim2.new(1, 0, 1, -54)
-    content.Position = UDim2.new(0, 0, 0, 54)
+    content.Size = UDim2.new(1, 0, 1, -32)
+    content.Position = UDim2.new(0, 0, 0, 32)
     content.BackgroundTransparency = 1
     content.ScrollBarThickness = 0
-    content.CanvasSize = UDim2.new(0, 0, 0, 520)
+    content.CanvasSize = UDim2.new(0, 0, 0, 220)
     content.Parent = main
 
     local list = Instance.new("UIListLayout")
-    list.Padding = UDim.new(0, 24)
+    list.Padding = UDim.new(0, 10)
     list.HorizontalAlignment = Enum.HorizontalAlignment.Center
     list.Parent = content
 
     local pad = Instance.new("UIPadding")
-    pad.PaddingTop = UDim.new(0, 5)
+    pad.PaddingTop = UDim.new(0, 4)
     pad.Parent = content
 
     local logoContainer = Instance.new("Frame")
-    logoContainer.Size = UDim2.fromOffset(80, 80)
+    logoContainer.Size = UDim2.fromOffset(52, 52)
     logoContainer.BackgroundColor3 = Configuration.Colors.Primary
     logoContainer.Parent = content
-    Utils.Round(logoContainer, 20)
+    Utils.Round(logoContainer, 14)
 
     local grad = Instance.new("UIGradient")
     grad.Color = ColorSequence.new(Configuration.Colors.Primary, Configuration.Colors.PrimaryDark)
@@ -505,46 +492,46 @@ local function Build()
     sIcon.Parent = logoContainer
 
     local titleArea = Instance.new("Frame")
-    titleArea.Size = UDim2.new(1, 0, 0, 44)
+    titleArea.Size = UDim2.new(1, -24, 0, 32)
     titleArea.BackgroundTransparency = 1
     titleArea.Parent = content
 
     local mainTitle = Instance.new("TextLabel")
-    mainTitle.Size = UDim2.new(1, 0, 0, 26)
+    mainTitle.Size = UDim2.new(1, 0, 0, 18)
     mainTitle.Text = "Khalexis Hub - Key"
     mainTitle.TextColor3 = Color3.new(1, 1, 1)
-    mainTitle.TextSize = 26
+    mainTitle.TextSize = Configuration.Fonts.Title
     mainTitle.Font = Enum.Font.GothamBold
     mainTitle.BackgroundTransparency = 1
     mainTitle.Parent = titleArea
 
     local subTitle = Instance.new("TextLabel")
-    subTitle.Size = UDim2.new(1, 0, 0, 16)
-    subTitle.Position = UDim2.fromOffset(0, 28)
+    subTitle.Size = UDim2.new(1, 0, 0, 12)
+    subTitle.Position = UDim2.fromOffset(0, 18)
     subTitle.Text = "Sistema de Key"
     subTitle.TextColor3 = Configuration.Colors.TextSec
-    subTitle.TextSize = 13
+    subTitle.TextSize = Configuration.Fonts.Subtitle
     subTitle.Font = Enum.Font.Gotham
     subTitle.BackgroundTransparency = 1
     subTitle.Parent = titleArea
 
     local statusCard = Instance.new("Frame")
-    statusCard.Size = UDim2.new(0, 280, 0, 68)
+    statusCard.Size = UDim2.new(0, 260, 0, 54)
     statusCard.BackgroundColor3 = Color3.new(1, 1, 1)
     statusCard.BackgroundTransparency = 0.96
     statusCard.Parent = content
-    Utils.Round(statusCard, 16)
+    Utils.Round(statusCard, 12)
 
     local sStroke = Utils.Stroke(statusCard, Color3.new(1, 1, 1), 1, 0.95)
 
     local sIconBg = Instance.new("Frame")
-    sIconBg.Size = UDim2.fromOffset(42, 42)
-    sIconBg.Position = UDim2.new(0, 14, 0.5, 0)
+    sIconBg.Size = UDim2.fromOffset(34, 34)
+    sIconBg.Position = UDim2.new(0, 12, 0.5, 0)
     sIconBg.AnchorPoint = Vector2.new(0, 0.5)
     sIconBg.BackgroundColor3 = Configuration.Colors.StatusIdle
     sIconBg.BackgroundTransparency = 0.9
     sIconBg.Parent = statusCard
-    Utils.Round(sIconBg, 21)
+    Utils.Round(sIconBg, 17)
 
     local sImg = Instance.new("ImageLabel")
     sImg.Size = UDim2.fromScale(0.5, 0.5)
@@ -556,39 +543,39 @@ local function Build()
     sImg.Parent = sIconBg
 
     local sLabel = Instance.new("TextLabel")
-    sLabel.Size = UDim2.new(1, -70, 0, 14)
-    sLabel.Position = UDim2.fromOffset(70, 16)
+    sLabel.Size = UDim2.new(1, -64, 0, 12)
+    sLabel.Position = UDim2.fromOffset(60, 12)
     sLabel.Text = "STATUS DA KEY"
     sLabel.TextColor3 = Configuration.Colors.TextMuted
-    sLabel.TextSize = 10
+    sLabel.TextSize = Configuration.Fonts.Small
     sLabel.Font = Enum.Font.GothamBold
     sLabel.TextXAlignment = Enum.TextXAlignment.Left
     sLabel.BackgroundTransparency = 1
     sLabel.Parent = statusCard
 
     local sValue = Instance.new("TextLabel")
-    sValue.Size = UDim2.new(1, -70, 0, 20)
-    sValue.Position = UDim2.fromOffset(70, 32)
+    sValue.Size = UDim2.new(1, -64, 0, 18)
+    sValue.Position = UDim2.fromOffset(60, 26)
     sValue.Text = "Sem key detectada."
     sValue.TextColor3 = Configuration.Colors.StatusIdle
-    sValue.TextSize = 15
+    sValue.TextSize = Configuration.Fonts.Body
     sValue.Font = Enum.Font.GothamMedium
     sValue.TextXAlignment = Enum.TextXAlignment.Left
     sValue.BackgroundTransparency = 1
     sValue.Parent = statusCard
 
     local inputFrame = Instance.new("Frame")
-    inputFrame.Size = UDim2.new(0, 280, 0, 52)
+    inputFrame.Size = UDim2.new(0, 260, 0, 40)
     inputFrame.BackgroundColor3 = Color3.new(1, 1, 1)
     inputFrame.BackgroundTransparency = 0.975
     inputFrame.Parent = content
-    Utils.Round(inputFrame, 14)
+    Utils.Round(inputFrame, 10)
 
     local iStroke = Utils.Stroke(inputFrame, Color3.new(1, 1, 1), 1, 0.95)
 
     local kIcon = Instance.new("ImageLabel")
-    kIcon.Size = UDim2.fromOffset(18, 18)
-    kIcon.Position = UDim2.new(0, 14, 0.5, 0)
+    kIcon.Size = UDim2.fromOffset(16, 16)
+    kIcon.Position = UDim2.new(0, 12, 0.5, 0)
     kIcon.AnchorPoint = Vector2.new(0, 0.5)
     kIcon.Image = Icons.Key
     kIcon.ImageColor3 = Configuration.Colors.TextMuted
@@ -596,20 +583,20 @@ local function Build()
     kIcon.Parent = inputFrame
 
     local box = Instance.new("TextBox")
-    box.Size = UDim2.new(1, -85, 1, 0)
-    box.Position = UDim2.fromOffset(45, 0)
+    box.Size = UDim2.new(1, -70, 1, 0)
+    box.Position = UDim2.fromOffset(38, 0)
     box.Text = ""
     box.PlaceholderText = "Cole sua key aqui..."
     box.TextColor3 = Color3.new(1, 1, 1)
-    box.TextSize = 14
+    box.TextSize = Configuration.Fonts.Input
     box.Font = Enum.Font.Gotham
     box.BackgroundTransparency = 1
     box.TextXAlignment = Enum.TextXAlignment.Left
     box.Parent = inputFrame
 
     local paste = Instance.new("ImageButton")
-    paste.Size = UDim2.fromOffset(18, 18)
-    paste.Position = UDim2.new(1, -14, 0.5, 0)
+    paste.Size = UDim2.fromOffset(16, 16)
+    paste.Position = UDim2.new(1, -10, 0.5, 0)
     paste.AnchorPoint = Vector2.new(1, 0.5)
     paste.Image = Icons.Copy
     paste.ImageColor3 = Configuration.Colors.TextMuted
@@ -618,56 +605,53 @@ local function Build()
 
     -- Container de botões
     local btnRow = Instance.new("Frame")
-    btnRow.Size = UDim2.new(0, 280, 0, 140)
+    btnRow.Size = UDim2.new(0, 260, 0, 100)
     btnRow.BackgroundTransparency = 1
     btnRow.Parent = content
 
     local btnList = Instance.new("UIListLayout")
     btnList.Parent = btnRow
     btnList.SortOrder = Enum.SortOrder.LayoutOrder
-    btnList.Padding = UDim.new(0, 10)
+    btnList.Padding = UDim.new(0, 6)
     btnList.HorizontalAlignment = Enum.HorizontalAlignment.Center
 
-    -- Botão 1: Verificar Key
     local redeem = Instance.new("TextButton")
-    redeem.Size = UDim2.new(1, 0, 0, 36)
+    redeem.Size = UDim2.new(1, 0, 0, 30)
     redeem.BackgroundColor3 = Configuration.Colors.Primary
     redeem.Text = "Verificar Key"
     redeem.TextColor3 = Color3.new(1, 1, 1)
     redeem.Font = Enum.Font.GothamBold
-    redeem.TextSize = 14
+    redeem.TextSize = Configuration.Fonts.Button
     redeem.AutoButtonColor = false
     redeem.LayoutOrder = 1
     redeem.Parent = btnRow
-    Utils.Round(redeem, 14)
+    Utils.Round(redeem, 10)
 
-    -- Botão 2: Comprar Premium
     local buyPremium = Instance.new("TextButton")
-    buyPremium.Size = UDim2.new(1, 0, 0, 36)
+    buyPremium.Size = UDim2.new(1, 0, 0, 30)
     buyPremium.BackgroundColor3 = Configuration.Colors.PremiumGold
     buyPremium.Text = "Comprar Key Premium"
     buyPremium.TextColor3 = Color3.new(1, 1, 1)
     buyPremium.Font = Enum.Font.GothamBold
-    buyPremium.TextSize = 14
+    buyPremium.TextSize = Configuration.Fonts.Button
     buyPremium.AutoButtonColor = false
     buyPremium.LayoutOrder = 2
     buyPremium.Parent = btnRow
-    Utils.Round(buyPremium, 14)
+    Utils.Round(buyPremium, 10)
     Utils.Stroke(buyPremium, Color3.new(1,1,1), 1, 0.9)
 
-    -- Botão 3: Pegar Grátis
     local getKey = Instance.new("TextButton")
-    getKey.Size = UDim2.new(1, 0, 0, 36)
+    getKey.Size = UDim2.new(1, 0, 0, 30)
     getKey.BackgroundColor3 = Color3.new(1, 1, 1)
     getKey.BackgroundTransparency = 0.955
     getKey.Text = "Pegar Key Grátis"
     getKey.TextColor3 = Color3.new(1, 1, 1)
     getKey.Font = Enum.Font.GothamBold
-    getKey.TextSize = 14
+    getKey.TextSize = Configuration.Fonts.Button
     getKey.AutoButtonColor = false
     getKey.LayoutOrder = 3
     getKey.Parent = btnRow
-    Utils.Round(getKey, 14)
+    Utils.Round(getKey, 10)
     Utils.Stroke(getKey, Color3.new(1, 1, 1), 1, 0.94)
 
     local function ApplyHover(btn)
@@ -676,7 +660,7 @@ local function Build()
             Utils.Tween(
                 btn,
                 {
-                    BackgroundColor3 = baseColor:Lerp(Color3.new(1, 1, 1), 0.1)
+                    BackgroundColor3 = baseColor:Lerp(Color3.new(1, 1, 1), 0.08)
                 },
                 0.2
             )
@@ -691,15 +675,13 @@ local function Build()
     ApplyHover(getKey)
 
     box.Focused:Connect(function()
-        Utils.Tween(iStroke, {Transparency = 0.5, Thickness = 1.2}, 0.3)
+        Utils.Tween(iStroke, {Transparency = 0.5, Thickness = 1.2}, 0.25)
     end)
     box.FocusLost:Connect(function()
-        Utils.Tween(iStroke, {Transparency = 0.95, Thickness = 1}, 0.3)
+        Utils.Tween(iStroke, {Transparency = 0.95, Thickness = 1}, 0.25)
     end)
 
-    -- ====================================================
-    -- STATUS DA KEY (SPINNER / ERRO / SUCESSO)
-    -- ====================================================
+    -- STATUS / SPINNER
     local spinConnection
     local dotsThread
 
@@ -743,7 +725,7 @@ local function Build()
                     end
                     sValue.Text = text .. dots[i]
                     i = (i % #dots) + 1
-                    task.wait(0.45)
+                    task.wait(0.4)
                 end
             end)
 
@@ -758,16 +740,14 @@ local function Build()
             text = "Key Inválida"
         end
 
-        Utils.Tween(sValue, {TextColor3 = color}, 0.35)
-        Utils.Tween(sImg, {ImageColor3 = color}, 0.35)
-        Utils.Tween(sIconBg, {BackgroundColor3 = color}, 0.35)
+        Utils.Tween(sValue, {TextColor3 = color}, 0.3)
+        Utils.Tween(sImg, {ImageColor3 = color}, 0.3)
+        Utils.Tween(sIconBg, {BackgroundColor3 = color}, 0.3)
         sValue.Text = text
         sImg.Image = icon
     end
 
-    -- ====================================================
-    -- BOTÃO VERIFICAR KEY COM DEBUG
-    -- ====================================================
+    -- BOTÃO VERIFICAR KEY + DEBUG
     redeem.MouseButton1Click:Connect(function()
         local key = box.Text:gsub("%s+", "")
         if key == "" then return end
@@ -781,7 +761,6 @@ local function Build()
         redeem.Active = true
         redeem.Text = "Verificar Key"
 
-        -- ====== DEBUG: IMPRIMIR TODA A RESPOSTA ======
         print("========== RESPOSTA DO JUNKIE ==========")
         if result then
             printTable(result)
@@ -789,7 +768,6 @@ local function Build()
             print("result é nil")
         end
         print("========================================")
-        -- ====== FIM DO DEBUG ======
 
         if not result then
             SetStatus("Erro")
@@ -801,7 +779,6 @@ local function Build()
             saveVerifiedKey(key)
             getgenv().SCRIPT_KEY = key
 
-            -- Tentar capturar expires_at de todos os lugares possíveis
             if result.expires_at then
                 getgenv().JD_EXPIRES_AT = tonumber(result.expires_at)
                 print("[INFO] expires_at encontrado:", getgenv().JD_EXPIRES_AT)
@@ -822,20 +799,20 @@ local function Build()
             SetStatus("Sucesso")
             ToastSystem.Create(screen, "Acesso liberado", "success")
 
-            task.wait(0.8)
+            task.wait(0.6)
             SetBlur(false)
             Utils.Tween(
                 main,
                 {
-                    Position = UDim2.new(0.5, 0, 0.5, 100),
+                    Position = UDim2.new(0.5, 0, 0.5, 80),
                     BackgroundTransparency = 1
                 },
-                0.7,
+                0.5,
                 Enum.EasingStyle.Exponential,
                 Enum.EasingDirection.In
             )
             task.delay(
-                0.7,
+                0.5,
                 function()
                     screen:Destroy()
                 end
@@ -846,35 +823,37 @@ local function Build()
         end
     end)
 
-    -- Botão Premium
     buyPremium.MouseButton1Click:Connect(function()
         setclipboard("https://discord.gg/uv7njazH8b")
         ToastSystem.Create(screen, "Link Premium copiado! Cole no Discord.", "success")
     end)
 
-    -- Botão Free
     getKey.MouseButton1Click:Connect(function()
         setclipboard("https://discord.gg/VzBKS3U4JA")
         ToastSystem.Create(screen, "Link Free copiado! Cole no navegador.", "success")
     end)
 
     paste.MouseButton1Click:Connect(function()
-        ToastSystem.Create(screen, "A funcionalidade de colar não é suportada no Roblox (por motivos de segurança).", "warning")
+        ToastSystem.Create(
+            screen,
+            "A funcionalidade de colar não é suportada no Roblox (por motivos de segurança).",
+            "warning"
+        )
     end)
 
-    main.Position = UDim2.new(0.5, 0, 0.5, 100)
+    main.Position = UDim2.new(0.5, 0, 0.5, 80)
     main.BackgroundTransparency = 1
     Utils.Tween(
         main,
         {
-            Position = UDim2.new(0.5, 0, 0.5, 0),
+            Position = UDim2.new(0.5, 0, 0.5, 20),
             BackgroundTransparency = 0.2
         },
-        1,
+        0.7,
         Enum.EasingStyle.Exponential
     )
 
-    -- Drag da janela
+    -- Drag
     local dragging, dragStart, startPos
     bar.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
@@ -899,9 +878,7 @@ local function Build()
     return screen
 end
 
--- ====================================================
--- CHECAGEM INICIAL DA KEY (ANTES DA UI) COM DEBUG
--- ====================================================
+-- CHECAGEM INICIAL DA KEY
 local savedKey = loadVerifiedKey()
 local keyToCheck = savedKey
 if not keyToCheck then
@@ -925,7 +902,6 @@ if keyToCheck then
         end
         getgenv().SCRIPT_KEY = keyToCheck
 
-        -- Tentar capturar expires_at de todos os lugares possíveis
         if result.expires_at then
             getgenv().JD_EXPIRES_AT = tonumber(result.expires_at)
         elseif result.expiry then
@@ -942,6 +918,11 @@ if keyToCheck then
     end
 else
     Build()
+end
+
+-- BLOQUEIO DE EXECUÇÃO ATÉ A KEY SER VALIDADA
+while not getgenv().SCRIPT_KEY do
+    task.wait(0.2)
 end
 
 -- ====================================================
