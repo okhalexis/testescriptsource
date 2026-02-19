@@ -1124,7 +1124,7 @@ local JogosDisponiveis = {
                     })
                 end
             })
-            
+
             Tab:AddButton({
                 Name = "FARES",
                 Icon = IconeDigital,
@@ -1204,7 +1204,7 @@ local JogosDisponiveis = {
     },
     {
         Name = "Flick",
-        PlaceId = 136801880565837, -- Coloque o Place ID de Flick aqui para auto detecção funcionar
+        PlaceId = 0, 
         Icon = IconePadrao,
         ScriptFunc = function(Tab)
             
@@ -1227,7 +1227,7 @@ local JogosDisponiveis = {
     },
     {
         Name = "Solo Hunters",
-        PlaceId = 136599248168660, -- Coloque o Place ID de Solo Hunters aqui para auto detecção funcionar
+        PlaceId = 0, 
         Icon = IconePadrao,
         ScriptFunc = function(Tab)
             
