@@ -250,7 +250,6 @@ ToastSystem.Create = function(parent, message, toastType, duration, statusCode)
     local toast = Instance.new("Frame")
     toast.Name = tostring(tick())
     toast.Size = UDim2.new(0, 0, 0, toastHeight)
-    -- acima da barra do Khalexis Team (dentro da janela)
     toast.Position = UDim2.new(0.5, 0, 0, 4)
     toast.AnchorPoint = Vector2.new(0.5, 0)
     toast.BackgroundColor3 = Configuration.Colors.Bg
@@ -401,7 +400,6 @@ local function Build()
 
     local main = Instance.new("Frame")
     main.Size = Configuration.Window.Size
-    -- levemente acima do centro, bom para mobile
     main.Position = UDim2.new(0.5, 0, 0.45, 0)
     main.AnchorPoint = Vector2.new(0.5, 0.5)
     main.BackgroundColor3 = Configuration.Colors.Bg
@@ -456,7 +454,6 @@ local function Build()
     titleText.BackgroundTransparency = 1
     titleText.Parent = bar
 
-    -- SCROLLINGFRAME COM BARRA SEMPRE VISÍVEL
     local content = Instance.new("ScrollingFrame")
     content.Size = UDim2.new(1, 0, 1, -32)
     content.Position = UDim2.new(0, 0, 0, 32)
@@ -1112,6 +1109,36 @@ local JogosDisponiveis = {
                     })
                 end
             })
+            
+            Tab:AddButton({
+                Name = "JN HUB",
+                Icon = IconeDigital,
+                Callback = function()
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/JNHHGaming/Tsunami/4dc0882e51b4068b4bdd8d9c97e0aed7c2d61c80/Brainrots",true))()
+                    
+                    OrionLib:MakeNotification({
+                        Name = "Notificação Khalexis Hub",
+                        Content = "O script JN HUB foi executado.",
+                        Image = IconeDigital,
+                        Time = 5
+                    })
+                end
+            })
+            
+            Tab:AddButton({
+                Name = "FARES",
+                Icon = IconeDigital,
+                Callback = function()
+                    loadstring(game:HttpGet("https://pastefy.app/Js0QLlE5/raw"))()
+                    
+                    OrionLib:MakeNotification({
+                        Name = "Notificação Khalexis Hub",
+                        Content = "O script FARES foi executado.",
+                        Image = IconeDigital,
+                        Time = 5
+                    })
+                end
+            })
         end
     },
     {
@@ -1129,6 +1156,90 @@ local JogosDisponiveis = {
                     OrionLib:MakeNotification({
                         Name = "Notificação Khalexis Hub",
                         Content = "O script ANBU foi executado.",
+                        Image = IconeDigital,
+                        Time = 5
+                    })
+                end
+            })
+
+        end
+    },
+    {
+        Name = "Brookhaven RP",
+        PlaceId = 4924922222, 
+        Icon = IconePadrao,
+        ScriptFunc = function(Tab)
+            
+            Tab:AddButton({
+                Name = "SANDER XY",
+                Icon = IconeDigital,
+                Callback = function()
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/kigredns/testUIDK/refs/heads/main/panel.lua"))()
+                    
+                    OrionLib:MakeNotification({
+                        Name = "Notificação Khalexis Hub",
+                        Content = "O script SANDER XY foi executado.",
+                        Image = IconeDigital,
+                        Time = 5
+                    })
+                end
+            })
+
+            Tab:AddButton({
+                Name = "Z4TROX HUB",
+                Icon = IconeDigital,
+                Callback = function()
+                    loadstring(game:HttpGet('https://raw.githubusercontent.com/Jfdedit3/z4trox-hub-v1/main/z4trox%20hub'))()
+                    
+                    OrionLib:MakeNotification({
+                        Name = "Notificação Khalexis Hub",
+                        Content = "O script Z4TROX HUB foi executado.",
+                        Image = IconeDigital,
+                        Time = 5
+                    })
+                end
+            })
+
+        end
+    },
+    {
+        Name = "Flick",
+        PlaceId = 136801880565837, -- Coloque o Place ID de Flick aqui para auto detecção funcionar
+        Icon = IconePadrao,
+        ScriptFunc = function(Tab)
+            
+            Tab:AddButton({
+                Name = "DARK HUB",
+                Icon = IconeDigital,
+                Callback = function()
+                    loadstring(game:HttpGet("https://pastefy.app/i8613E31/raw"))()
+                    
+                    OrionLib:MakeNotification({
+                        Name = "Notificação Khalexis Hub",
+                        Content = "O script DARK HUB foi executado.",
+                        Image = IconeDigital,
+                        Time = 5
+                    })
+                end
+            })
+
+        end
+    },
+    {
+        Name = "Solo Hunters",
+        PlaceId = 136599248168660, -- Coloque o Place ID de Solo Hunters aqui para auto detecção funcionar
+        Icon = IconePadrao,
+        ScriptFunc = function(Tab)
+            
+            Tab:AddButton({
+                Name = "AEONIC HUB",
+                Icon = IconeDigital,
+                Callback = function()
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/mazino45/main/refs/heads/main/MainScript.lua"))()
+                    
+                    OrionLib:MakeNotification({
+                        Name = "Notificação Khalexis Hub",
+                        Content = "O script AEONIC HUB foi executado.",
                         Image = IconeDigital,
                         Time = 5
                     })
