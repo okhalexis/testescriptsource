@@ -910,21 +910,21 @@ end
 -- Aqui adicionamos a lógica para buscar a expiração da key
 -- já que o script passou pela validação acima.
 task.spawn(function()
-    local key = getgenv().SCRIPT_KEY
+    local key = SCRIPT_KEY
     if key then
         -- Usamos o Junkie novamente para pegar os detalhes, agora que estamos seguros no hub
         local result = Junkie.check_key(key)
         if result then
             if result.expires_at then
-                getgenv().JD_EXPIRES_AT = tonumber(result.expires_at)
+                JD_EXPIRES_AT = tonumber(result.expires_at)
             elseif result.expiry then
-                getgenv().JD_EXPIRES_AT = tonumber(result.expiry)
+                JD_EXPIRES_AT = tonumber(result.expiry)
             elseif result.expire_at then
-                getgenv().JD_EXPIRES_AT = tonumber(result.expire_at)
+                JD_EXPIRES_AT = tonumber(result.expire_at)
             elseif result.expiresAt then
-                getgenv().JD_EXPIRES_AT = tonumber(result.expiresAt)
+                JD_EXPIRES_AT = tonumber(result.expiresAt)
             else
-                getgenv().JD_EXPIRES_AT = nil
+                JD_EXPIRES_AT = nil
             end
         end
     end
@@ -978,7 +978,7 @@ task.spawn(function()
     task.wait(2) -- aguarda para garantir que JD_EXPIRES_AT foi definido pela spawn anterior
     
     while true do
-        local expiresAt = getgenv().JD_EXPIRES_AT
+        local expiresAt = JD_EXPIRES_AT
 
         if expiresAt ~= nil then
             local remaining = expiresAt - os.time()
@@ -1228,9 +1228,7 @@ local JogosDisponiveis = {
                 end
             })
 
-            -- =================================================
-            -- NOVOS SCRIPTS ADICIONADOS EM ESCAPE TSUNAMI
-            -- =================================================
+            -- Novos Scripts do Escape Tsunami
             Tab:AddButton({
                 Name = "JN HUB",
                 Icon = IconeDigital,
@@ -1424,9 +1422,6 @@ local JogosDisponiveis = {
             })
         end
     },
-    -- =================================================
-    -- NOVAS ABAS / CATEGORIAS ADICIONADAS ABAIXO
-    -- =================================================
     {
         Name = "Brookhaven RP",
         PlaceId = 4924922222,
@@ -1465,7 +1460,7 @@ local JogosDisponiveis = {
     },
     {
         Name = "Flick",
-        PlaceId 136801880565837= , -- Substitua o 0 pelo PlaceId caso queira que ele detecte automaticamente e mostre a estrela ⭐
+        PlaceId = 0,
         Icon = IconePadrao,
         ScriptFunc = function(Tab)
             Tab:AddButton({
@@ -1486,7 +1481,7 @@ local JogosDisponiveis = {
     },
     {
         Name = "Solo Hunters",
-        PlaceId = 136599248168660, -- Substitua o 0 pelo PlaceId caso queira que ele detecte automaticamente e mostre a estrela ⭐
+        PlaceId = 0,
         Icon = IconePadrao,
         ScriptFunc = function(Tab)
             Tab:AddButton({
